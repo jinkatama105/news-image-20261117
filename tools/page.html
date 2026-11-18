@@ -4,135 +4,195 @@
 <meta charset="utf-8">
 <style>
   :root{
-    --paper:#f4efe3; --ink:#1a1a1a;
+    --paper:#f4efe3; --ink:#1c1c1c; --panel:#faf6ec; --line:#d8d0bd;
     --eu:#2563a8; --me:#d97b29; --as:#7050a0; --af:#3a8a4d;
     --am:#b8433c; --gl:#2f8f8a; --us:#444444; --ru:#777777;
+    --alarm:#8b1e1e;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:1024px;height:1024px;overflow:hidden}
   body{background:var(--paper);color:var(--ink);
     font-family:"Helvetica Neue",Helvetica,Arial,"Liberation Sans",sans-serif;
-    padding:18px 20px 12px;display:flex;flex-direction:column}
+    padding:16px 20px 10px;display:flex;flex-direction:column}
   .serif{font-family:Georgia,"Liberation Serif","Times New Roman",serif}
 
   /* ---- masthead ---- */
-  .kicker-row{display:flex;justify-content:space-between;align-items:baseline}
-  .kicker{color:#b8433c;font-size:11px;font-weight:700;letter-spacing:.14em}
-  .kicker-r{color:#6b6b64;font-size:10px;font-weight:700;letter-spacing:.12em}
-  .dateline{font-family:Georgia,"Liberation Serif",serif;font-size:53px;line-height:1.02;
+  .kicker-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+  .publisher{font-variant:small-caps;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--ink)}
+  .publisher em{font-style:normal;color:#6b6b64;font-weight:400}
+  .kicker{color:#8b1e1e;font-size:10.5px;font-weight:700;letter-spacing:.14em;white-space:nowrap}
+  .kicker-r{color:#6b6b64;font-size:10px;font-weight:700;letter-spacing:.12em;white-space:nowrap}
+  .dateline{font-family:Georgia,"Liberation Serif",serif;font-size:50px;line-height:1.02;
     font-weight:700;margin-top:2px;letter-spacing:-.01em}
-  .rule{border-top:3px solid var(--ink);margin:7px 0 0}
+  .rule{border-top:3px solid var(--ink);margin:6px 0 0}
   .rule.thin{border-top:1px solid var(--ink);margin-top:2px}
 
+  /* ---- top-story kicker strip ---- */
+  .bandkick{display:flex;align-items:center;gap:10px;margin-top:9px}
+  .bandkick .t{font-size:10.5px;font-weight:700;letter-spacing:.18em}
+  .bandkick .ln{flex:1;border-top:1px solid var(--ink)}
+
   /* ---- lead band ---- */
-  .leads{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:11px}
-  .lead{border:1px solid #d8d0bd;background:#faf6ec;display:flex;flex-direction:column}
-  .lead .art{height:74px;border-bottom:4px solid var(--c)}
+  .leads{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-top:7px}
+  .lead{border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column}
+  .lead .art{height:84px;border-bottom:4px solid var(--c)}
   .lead .art svg{display:block;width:100%;height:100%}
-  .lead .body{padding:8px 11px 9px}
+  .lead .body{padding:8px 11px 9px;flex:1;display:flex;flex-direction:column}
   .disc{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;
     border-radius:50%;background:var(--c);color:#fff;font-size:11px;font-weight:700;flex:none}
-  .lab{font-size:9.5px;font-weight:700;letter-spacing:.11em;color:#5c584e;margin:6px 0 3px}
-  .lead h2{font-family:Georgia,"Liberation Serif",serif;font-size:16.5px;line-height:1.13}
-  .lead p{font-family:Georgia,"Liberation Serif",serif;font-size:10.5px;line-height:1.3;color:#3c3a34;margin-top:4px}
+  .outlet{font-variant:small-caps;font-size:8.5px;font-weight:700;letter-spacing:.1em;color:#6b6b64}
+  .lab{font-size:9.5px;font-weight:700;letter-spacing:.11em;color:#5c584e;margin:5px 0 3px}
+  .lead h2{font-family:Georgia,"Liberation Serif",serif;font-size:16.5px;line-height:1.16;
+    height:58px;overflow:hidden}
+  .lead p{font-family:Georgia,"Liberation Serif",serif;font-size:11px;line-height:1.3;color:var(--ink);margin-top:4px;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
   /* ---- card rows ---- */
-  .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
-  .card{border:1px solid #d8d0bd;background:#faf6ec;display:flex;flex-direction:column}
-  .card .art{height:38px;border-bottom:3px solid var(--c)}
+  .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:9px}
+  .card{border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column}
+  .card .art{height:40px;border-bottom:3px solid var(--c)}
   .card .art svg{display:block;width:100%;height:100%}
   .card .body{padding:5px 8px 6px;flex:1}
   .card .top{display:flex;align-items:center;gap:5px}
+  .card .top .outlet{margin-left:auto}
   .card .disc{width:15px;height:15px;font-size:9px}
-  .card .lab{margin:0;font-size:8px;letter-spacing:.08em}
-  .card h3{font-family:Georgia,"Liberation Serif",serif;font-size:10.5px;line-height:1.12;margin-top:3px}
-  .card p{font-size:8.5px;line-height:1.22;color:#4a473f;margin-top:2px}
+  .card .lab{margin:0;font-size:8.5px;letter-spacing:.07em}
+  .card h3{font-family:Georgia,"Liberation Serif",serif;font-size:12px;line-height:1.14;margin-top:3px}
+  .card p{font-size:10px;line-height:1.26;color:var(--ink);margin-top:3px}
 
   /* ---- bottom band ---- */
-  .bottom{display:grid;grid-template-columns:42fr 58fr;gap:14px;margin-top:11px;flex:1;min-height:0}
+  .bottom{display:grid;grid-template-columns:42fr 58fr;gap:14px;margin-top:10px;flex:1;min-height:0}
   .panel-title{font-size:10px;font-weight:700;letter-spacing:.13em;border-bottom:1px solid var(--ink);
     padding-bottom:3px;margin-bottom:5px;display:flex;justify-content:space-between}
   .map{display:flex;flex-direction:column;min-height:0}
   .map svg{flex:1;width:100%;height:100%}
-  .alsolist{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-content:start}
-  .alsolist li{list-style:none;display:flex;gap:5px;align-items:baseline;font-size:9px;
-    line-height:1.22;padding:1.2px 0}
-  .alsolist .disc{width:11px;height:11px;font-size:7px;transform:translateY(1px)}
+  .legend{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:8px;font-weight:700;letter-spacing:.06em;color:#5c584e;padding-top:4px}
+  .alsolist{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;align-content:start}
+  .alsolist li{list-style:none;display:flex;gap:6px;align-items:baseline;font-size:9.5px;
+    line-height:1.25;padding:0.5px 0;border-bottom:1px solid #e7dfcd}
+  .alsolist li:nth-child(4n+1),.alsolist li:nth-child(4n+2){border-bottom-color:transparent}
+  .alsolist .txt{flex:1}
+  .alsolist .outlet{white-space:nowrap;margin-left:6px}
+  .alsolist .disc{width:13px;height:13px;font-size:8px;transform:translateY(2px)}
 
   /* ---- footer ---- */
   .footer{display:flex;justify-content:space-between;align-items:baseline;
     border-top:3px solid var(--ink);margin-top:8px;padding-top:5px}
-  .footer .it{font-family:Georgia,"Liberation Serif",serif;font-style:italic;font-size:10px;color:#3c3a34}
-  .footer .src{font-size:8.5px;font-weight:700;letter-spacing:.09em;color:#6b6b64}
+  .footer .it{font-family:Georgia,"Liberation Serif",serif;font-style:italic;font-size:10.5px;color:var(--ink)}
+  .footer .src{font-size:9px;font-weight:700;letter-spacing:.09em;color:#6b6b64}
 </style>
 </head>
 <body>
 
 <!-- MASTHEAD -->
 <div class="kicker-row">
+  <div class="publisher">One Day, One Page &mdash; <em>edited by anzu for make.fun</em></div>
   <div class="kicker">THE WORLD'S NEWS IN ONE PICTURE</div>
-  <div class="kicker-r">42 STORIES &middot; 6 CONTINENTS &middot; ALL FROM TUESDAY</div>
+  <div class="kicker-r">39 STORIES &middot; 6 CONTINENTS &middot; ALL FROM TUESDAY</div>
 </div>
 <div class="dateline">Tuesday 17 November 2026</div>
 <div class="rule"></div><div class="rule thin"></div>
+
+<!-- TOP STORY strip -->
+<div class="bandkick"><span class="t">TOP STORY</span><span class="ln"></span></div>
 
 <!-- LEAD BAND -->
 <div class="leads">
   <div class="lead" style="--c:var(--eu)">
     <div class="art">
-      <svg viewBox="0 0 300 74">
-        <rect width="300" height="74" fill="#e9e2cf"/>
-        <rect y="52" width="300" height="22" fill="#bcd0de"/>
-        <path d="M10 52 V30 H120 V52" fill="none" stroke="#1a1a1a" stroke-width="5"/>
-        <path d="M200 52 V30 H290 V52" fill="none" stroke="#1a1a1a" stroke-width="5"/>
-        <path d="M120 34 L150 58 L170 44" stroke="#b8433c" stroke-width="4" fill="none"/>
-        <path d="M132 30 l8 -12 M150 38 l12 -14 M168 32 l8 -12" stroke="#b8433c" stroke-width="3"/>
-        <rect x="55" y="12" width="4" height="18" fill="#1a1a1a"/>
-        <rect x="240" y="12" width="4" height="18" fill="#1a1a1a"/>
+      <svg viewBox="0 0 300 84">
+        <rect width="300" height="84" fill="#e9e2cf"/>
+        <rect y="60" width="300" height="24" fill="#bcd0de"/>
+        <!-- pylon towers -->
+        <path d="M42 12 h16 l-4 48 h-8 z M242 12 h16 l-4 48 h-8 z" fill="#1c1c1c"/>
+        <!-- intact truss spans -->
+        <g stroke="#1c1c1c" stroke-width="2" fill="none">
+          <path d="M0 60 V44 H48 V60 M0 44 L12 60 M12 44 L24 60 M24 44 L36 60 M36 44 L48 60"/>
+          <path d="M252 60 V44 H300 V60 M252 44 L264 60 M264 44 L276 60 M276 44 L288 60 M288 44 L300 60"/>
+        </g>
+        <!-- collapsed span tipped into the water -->
+        <path d="M104 52 L150 74 M112 46 L118 62 M130 54 L138 70 M148 62 L154 76" stroke="#1c1c1c" stroke-width="2" fill="none"/>
+        <path d="M96 44 L150 74" stroke="#1c1c1c" stroke-width="3" fill="none"/>
+        <path d="M96 44 L104 52 M96 44 h14" stroke="#1c1c1c" stroke-width="2"/>
+        <!-- cracks -->
+        <path d="M60 52 l5 4 -3 4 6 4 M82 56 l4 5 M198 64 l4 -5 4 4" stroke="var(--alarm)" stroke-width="2" fill="none"/>
+        <!-- debris + smoke plumes -->
+        <path d="M150 78 h10 M162 80 h8 M142 80 h6" stroke="#1c1c1c" stroke-width="2"/>
+        <path d="M120 40 c-6 -8 4 -12 -2 -20 M128 42 c6 -8 -4 -14 2 -22" stroke="#8a8578" stroke-width="2" fill="none"/>
+        <ellipse cx="118" cy="12" rx="10" ry="6" fill="none" stroke="#8a8578" stroke-width="2"/>
+        <ellipse cx="136" cy="8" rx="12" ry="7" fill="none" stroke="#8a8578" stroke-width="2"/>
+        <ellipse cx="152" cy="14" rx="9" ry="5" fill="none" stroke="#8a8578" stroke-width="2"/>
+        <path d="M200 44 c5 -7 -3 -11 2 -18" stroke="#8a8578" stroke-width="2" fill="none"/>
       </svg>
     </div>
     <div class="body">
-      <div><span class="disc">1</span><div class="lab">EUROPE &middot; UKRAINE WAR</div></div>
+      <div><span class="disc">1</span><span style="float:right" class="outlet">CNN</span>
+      <div class="lab">EUROPE &middot; UKRAINE WAR</div></div>
       <h2>Ukraine strike collapses a span of Putin's prized Crimean bridge</h2>
       <p>Kerch Strait link severed on the second day of strikes; Zelensky hails an "unprecedented operation." Russia claims a record 1,441 drones intercepted overnight &mdash; its own account.</p>
     </div>
   </div>
   <div class="lead" style="--c:var(--me)">
     <div class="art">
-      <svg viewBox="0 0 300 74">
-        <rect width="300" height="74" fill="#e9e2cf"/>
-        <rect y="56" width="300" height="18" fill="#cfdbe6"/>
-        <path d="M30 56 A34 34 0 0 1 98 56" fill="none" stroke="#1a1a1a" stroke-width="4"/>
-        <line x1="64" y1="56" x2="64" y2="26" stroke="#1a1a1a" stroke-width="4"/>
-        <circle cx="64" cy="24" r="5" fill="#d97b29"/>
-        <path d="M150 40 l14 -6 -14 -6 z M164 34 h18" stroke="#b8433c" stroke-width="3" fill="#b8433c"/>
-        <path d="M185 28 l16 4 -16 4 z" fill="#b8433c"/>
-        <path d="M235 20 v10 M230 25 h10" stroke="#d97b29" stroke-width="3"/>
-        <path d="M258 34 v10 M253 39 h10" stroke="#d97b29" stroke-width="3"/>
-        <path d="M205 58 l8 -8 M213 58 l-8 -8" stroke="#b8433c" stroke-width="3"/>
+      <svg viewBox="0 0 300 84">
+        <rect width="300" height="84" fill="#e9e2cf"/>
+        <rect y="66" width="300" height="18" fill="#cfdbe6"/>
+        <!-- radar dome on a mast -->
+        <path d="M34 66 A30 30 0 0 1 94 66 Z" fill="#f4efe3" stroke="#1c1c1c" stroke-width="2"/>
+        <path d="M46 60 A22 22 0 0 1 64 46 M56 64 A14 14 0 0 1 68 56" stroke="#1c1c1c" stroke-width="1.5" fill="none"/>
+        <line x1="64" y1="66" x2="64" y2="72" stroke="#1c1c1c" stroke-width="3"/>
+        <rect x="52" y="70" width="24" height="6" fill="#1c1c1c"/>
+        <!-- missile arcs coming in -->
+        <path d="M300 14 C230 6 150 10 92 40" stroke="var(--alarm)" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+        <path d="M300 40 C250 30 170 32 100 52" stroke="var(--alarm)" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+        <path d="M92 40 l-8 -3 5 7 z M100 52 l-8 -3 5 7 z" fill="var(--alarm)"/>
+        <!-- drone silhouettes -->
+        <g fill="#1c1c1c">
+          <path d="M150 22 h18 l-4 5 h-10 z M154 20 h10 M152 27 h14"/>
+          <path d="M196 12 h14 l-3 4 h-8 z M199 10 h8"/>
+        </g>
+        <!-- burst over the water -->
+        <path d="M126 62 v-8 M122 66 l-6 -5 M134 66 l6 -5 M126 66 v8" stroke="var(--alarm)" stroke-width="2"/>
+        <!-- palm skyline -->
+        <g stroke="#1c1c1c" stroke-width="2" fill="none">
+          <path d="M240 76 v-18 M240 58 c-8 -4 -14 -2 -18 2 M240 58 c8 -4 14 -2 18 2 M240 58 c-4 -8 -10 -10 -16 -8 M240 58 c4 -8 10 -10 16 -8"/>
+          <path d="M268 76 v-14 M268 62 c-7 -3 -12 -2 -15 2 M268 62 c7 -3 12 -2 15 2 M268 62 c-3 -7 -9 -8 -13 -6"/>
+        </g>
       </svg>
     </div>
     <div class="body">
-      <div><span class="disc">2</span><div class="lab">MIDDLE EAST &middot; IRAN&ndash;US</div></div>
+      <div><span class="disc">2</span><span style="float:right" class="outlet">REUTERS</span>
+      <div class="lab">MIDDLE EAST &middot; IRAN&ndash;US</div></div>
       <h2>Iran hits a US radar in Bahrain with drones; US strikes Qeshm Island</h2>
       <p>Kuwait also reports drone attacks. Mines in the Strait of Hormuz threaten tankers, yet talks between Tehran and Washington continue via mediators.</p>
     </div>
   </div>
   <div class="lead" style="--c:var(--as)">
     <div class="art">
-      <svg viewBox="0 0 300 74">
-        <rect width="300" height="74" fill="#e9e2cf"/>
-        <ellipse cx="150" cy="52" rx="95" ry="16" fill="#d8d0bd"/>
-        <rect x="52" y="30" width="9" height="16" fill="#2563a8"/><rect x="54" y="20" width="5" height="11" fill="#1a1a1a"/>
-        <rect x="112" y="26" width="9" height="18" fill="#b8433c"/><rect x="114" y="16" width="5" height="11" fill="#1a1a1a"/>
-        <rect x="176" y="28" width="9" height="17" fill="#3a8a4d"/><rect x="178" y="18" width="5" height="11" fill="#1a1a1a"/>
-        <rect x="238" y="30" width="9" height="16" fill="#7050a0"/><rect x="240" y="20" width="5" height="11" fill="#1a1a1a"/>
-        <circle cx="150" cy="14" r="8" fill="none" stroke="#7050a0" stroke-width="3"/>
-        <path d="M150 4 h20 M150 24 h-20" stroke="#7050a0" stroke-width="2"/>
+      <svg viewBox="0 0 300 84">
+        <rect width="300" height="84" fill="#e9e2cf"/>
+        <!-- Manila sun -->
+        <circle cx="262" cy="20" r="10" fill="none" stroke="#d97b29" stroke-width="2"/>
+        <path d="M262 4 v-0 M262 6 l0 -5 M262 34 v6 M246 20 h-6 M278 20 h6 M251 9 l-4 -4 M273 9 l4 -4 M251 31 l-4 4 M273 31 l4 4" stroke="#d97b29" stroke-width="2"/>
+        <!-- four flag-pole pins -->
+        <g stroke="#1c1c1c" stroke-width="2" fill="none">
+          <path d="M34 70 V22 h20 v12 h-20 M78 70 V18 h20 v12 h-20 M122 70 V22 h20 v12 h-20 M166 70 V18 h20 v12 h-20"/>
+        </g>
+        <g fill="var(--eu)"><rect x="34" y="22" width="20" height="12"/><rect x="122" y="22" width="20" height="12"/></g>
+        <g fill="var(--as)"><rect x="78" y="18" width="20" height="12"/><rect x="166" y="18" width="20" height="12"/></g>
+        <!-- handshake arc -->
+        <path d="M180 44 C210 26 250 26 280 44" stroke="#1c1c1c" stroke-width="2" fill="none"/>
+        <path d="M176 48 l14 -8 8 4 -12 8 z M284 48 l-14 -8 -8 4 12 8 z" fill="#1c1c1c"/>
+        <!-- summit table -->
+        <ellipse cx="230" cy="62" rx="52" ry="9" fill="#d8d0bd" stroke="#1c1c1c" stroke-width="2"/>
+        <path d="M198 68 v6 M262 68 v6" stroke="#1c1c1c" stroke-width="2"/>
+        <circle cx="212" cy="59" r="3" fill="#1c1c1c"/><circle cx="230" cy="60" r="3" fill="#1c1c1c"/><circle cx="248" cy="59" r="3" fill="#1c1c1c"/>
+        <rect y="76" width="300" height="8" fill="#cfdbe6"/>
       </svg>
     </div>
     <div class="body">
-      <div><span class="disc">3</span><div class="lab">ASIA &middot; DIPLOMACY</div></div>
+      <div><span class="disc">3</span><span style="float:right" class="outlet">AL JAZEERA</span>
+      <div class="lab">ASIA &middot; DIPLOMACY</div></div>
       <h2>Trump convenes the first Quad leaders' summit in two years, in Manila</h2>
       <p>Critical-minerals agreements announced at the table. He heads next to China for talks with Xi, while Putin is due in Shenzhen.</p>
     </div>
@@ -141,73 +201,73 @@
 
 <!-- CARD ROW 1 -->
 <div class="cards">
-  <div class="card" style="--c:var(--af)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><circle cx="38" cy="19" r="9" fill="#3a8a4d"/><circle cx="38" cy="19" r="4" fill="#e9e2cf"/><path d="M20 28 L30 22 M56 28 L46 22" stroke="#1a1a1a" stroke-width="3"/><path d="M78 30 v-14 M72 24 h12" stroke="#b8433c" stroke-width="4"/><path d="M95 30 v-9 M90 26 h10" stroke="#b8433c" stroke-width="3"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">4</span><span class="lab">AFRICA &middot; HEALTH</span></div>
+  <div class="card" style="--c:var(--af)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><circle cx="38" cy="20" r="10" fill="#3a8a4d"/><circle cx="38" cy="20" r="4.5" fill="#e9e2cf"/><path d="M22 30 L30 24 M54 30 L46 24 M24 10 L32 15 M52 10 L44 15" stroke="#1c1c1c" stroke-width="2"/><path d="M78 32 v-16 M70 24 h16" stroke="var(--alarm)" stroke-width="4"/><path d="M98 32 v-10 M93 27 h10" stroke="var(--alarm)" stroke-width="3"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">4</span><span class="lab">AFRICA &middot; HEALTH</span><span class="outlet">WHO</span></div>
     <h3>Ebola surge in DR Congo</h3><p>Cases double in three months, WHO warns; deaths in the thousands.</p></div></div>
-  <div class="card" style="--c:var(--gl)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><circle cx="34" cy="19" r="11" fill="none" stroke="#2f8f8a" stroke-width="3"/><path d="M34 8 v22 M23 19 h22" stroke="#2f8f8a" stroke-width="2"/><path d="M70 30 C78 18 90 14 104 12 C96 24 84 30 70 30 z" fill="#3a8a4d"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">5</span><span class="lab">GLOBAL &middot; CLIMATE</span></div>
-    <h3>COP31 draft splits nations</h3><p>First text divides over fossil-fuel phase-out; 31 Catholic orgs divest. Friday deadline.</p></div></div>
-  <div class="card" style="--c:var(--am)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><rect x="24" y="10" width="26" height="18" rx="9" fill="none" stroke="#b8433c" stroke-width="3"/><circle cx="31" cy="17" r="2.4" fill="#b8433c"/><circle cx="41" cy="21" r="2.4" fill="#b8433c"/><path d="M66 12 v14 M60 19 h12" stroke="#3a8a4d" stroke-width="4"/><path d="M90 26 L104 12 M97 26 L83 12" stroke="#b8433c" stroke-width="4"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">6</span><span class="lab">AMERICAS &middot; HEALTH</span></div>
-    <h3>Measles status lost</h3><p>US, Mexico, Bolivia lose elimination status (PAHO); US first loss in ~3 decades.</p></div></div>
-  <div class="card" style="--c:var(--us)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M14 30 V14 M30 30 V18 M46 30 V22 M62 30 V16" stroke="#444" stroke-width="5"/><path d="M74 12 L104 28" stroke="#b8433c" stroke-width="3"/><path d="M104 28 l-8 -1 M104 28 l-1 -8" stroke="#b8433c" stroke-width="3"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">7</span><span class="lab">US &middot; MARKETS</span></div>
+  <div class="card" style="--c:var(--gl)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><circle cx="32" cy="20" r="12" fill="none" stroke="#2f8f8a" stroke-width="2"/><path d="M32 8 v24 M20 20 h24 M23 12 l18 16" stroke="#2f8f8a" stroke-width="1.5"/><path d="M66 32 C74 18 88 14 106 10 C98 26 84 32 66 32 z" fill="#3a8a4d"/><path d="M106 10 L88 22" stroke="#1c1c1c" stroke-width="2"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">5</span><span class="lab">GLOBAL &middot; CLIMATE</span><span class="outlet">JAPAN TIMES</span></div>
+    <h3>COP31 draft splits nations</h3><p>Fossil-fuel phase-out divides text; US, China, EU decline an AI-climate pledge.</p></div></div>
+  <div class="card" style="--c:var(--am)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><rect x="22" y="10" width="28" height="20" rx="10" fill="none" stroke="#b8433c" stroke-width="2"/><circle cx="30" cy="18" r="2.4" fill="#b8433c"/><circle cx="42" cy="23" r="2.4" fill="#b8433c"/><path d="M66 12 v16 M58 20 h16" stroke="#3a8a4d" stroke-width="3"/><path d="M92 28 L106 12 M99 28 L85 12" stroke="#b8433c" stroke-width="3"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">6</span><span class="lab">AMERICAS &middot; HEALTH</span><span class="outlet">PAHO</span></div>
+    <h3>Measles status lost</h3><p>US, Mexico, Bolivia lose elimination status; US first loss in ~3 decades.</p></div></div>
+  <div class="card" style="--c:var(--us)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><path d="M12 32 V16 M28 32 V20 M44 32 V24 M60 32 V18" stroke="#444" stroke-width="5"/><path d="M72 12 L106 30 M106 30 l-8 -1 M106 30 l-1 -8" stroke="var(--alarm)" stroke-width="3" fill="none"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">7</span><span class="lab">US &middot; MARKETS</span><span class="outlet">REUTERS</span></div>
     <h3>Dow slips ~850 on tech selloff</h3><p>Nvidia's quarterly report lands after the close; revenue up 103% to $115.8bn.</p></div></div>
-  <div class="card" style="--c:var(--me)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M28 30 L44 12 L60 30 z" fill="none" stroke="#d97b29" stroke-width="3"/><path d="M72 22 h20 M82 14 h16 M76 30 h24" stroke="#1a1a1a" stroke-width="3"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">8</span><span class="lab">MIDDLE EAST &middot; GAZA</span></div>
-    <h3>Ceasefire at collapse risk</h3><p>Board of Peace report is bleak; UN: 1.4 million face acute hunger as winter hits.</p></div></div>
+  <div class="card" style="--c:var(--me)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><path d="M26 32 L42 12 L58 32 z" fill="none" stroke="#d97b29" stroke-width="2"/><path d="M70 16 h22 M76 24 h20 M70 32 h28" stroke="#1c1c1c" stroke-width="3"/><circle cx="102" cy="12" r="4" fill="none" stroke="var(--alarm)" stroke-width="2"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">8</span><span class="lab">MIDDLE EAST &middot; GAZA</span><span class="outlet">UN OCHA</span></div>
+    <h3>Ceasefire at collapse risk</h3><p>Board of Peace report bleak; UN: 1.4 million face acute hunger as winter hits.</p></div></div>
 </div>
 
 <!-- CARD ROW 2 -->
 <div class="cards">
-  <div class="card" style="--c:var(--as)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M36 8 L36 30" stroke="#1a1a1a" stroke-width="3"/><path d="M38 9 h20 l-5 6 5 6 h-20 z" fill="#7050a0"/><rect x="74" y="12" width="14" height="18" fill="none" stroke="#1a1a1a" stroke-width="3"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">9</span><span class="lab">ASIA &middot; POLITICS</span></div>
+  <div class="card" style="--c:var(--as)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><path d="M36 8 V32" stroke="#1c1c1c" stroke-width="2"/><path d="M38 9 h20 l-5 7 5 7 h-20 z" fill="#7050a0"/><rect x="72" y="12" width="16" height="20" fill="none" stroke="#1c1c1c" stroke-width="2"/><path d="M72 22 h16" stroke="#1c1c1c" stroke-width="2"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">9</span><span class="lab">ASIA &middot; POLITICS</span><span class="outlet">AL JAZEERA</span></div>
     <h3>Mongolia's president to resign</h3><p>Kh&uuml;rels&uuml;kh quits over a $25m bribery claim he denies: "I have never stolen."</p></div></div>
-  <div class="card" style="--c:var(--eu)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M24 30 V16 M40 30 V12 M56 30 V16" stroke="#2563a8" stroke-width="4"/><path d="M16 14 h48" stroke="#1a1a1a" stroke-width="3"/><circle cx="86" cy="14" r="5" fill="#1a1a1a"/><circle cx="76" cy="26" r="5" fill="#2563a8"/><circle cx="96" cy="26" r="5" fill="#2563a8"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">10</span><span class="lab">EUROPE &middot; POLITICS</span></div>
-    <h3>Student majority takes Serbia</h3><p>Students List enters new parliament; Vu&ccaron;i&cacute;'s SNS moves to opposition.</p></div></div>
-  <div class="card" style="--c:var(--as)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M20 30 V14 h10 v6 h10 v-6 h10 v16 z" fill="#7050a0"/><rect x="26" y="22" width="6" height="8" fill="#e9e2cf"/><circle cx="70" cy="20" r="7" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><path d="M75 26 l10 8" stroke="#1a1a1a" stroke-width="3"/><path d="M96 12 c4 4 4 8 0 12" stroke="#b8433c" stroke-width="3" fill="none"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">11</span><span class="lab">ASIA &middot; LABOUR</span></div>
+  <div class="card" style="--c:var(--eu)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><rect x="20" y="10" width="26" height="22" fill="none" stroke="#2563a8" stroke-width="2"/><path d="M20 18 h26 M33 10 v22" stroke="#2563a8" stroke-width="2"/><path d="M60 12 c10 14 16 14 26 0 M64 20 l-4 8 M82 20 l4 8" stroke="#1c1c1c" stroke-width="2" fill="none"/><circle cx="98" cy="28" r="5" fill="none" stroke="var(--alarm)" stroke-width="2"/><path d="M94 24 l8 8" stroke="var(--alarm)" stroke-width="2"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">10</span><span class="lab">EUROPE &middot; BANKING</span><span class="outlet">FRANCE 24</span></div>
+    <h3>Deutsche Bank shares slide</h3><p>Reports of a mass leak &mdash; 15 million files &mdash; detail years of misconduct.</p></div></div>
+  <div class="card" style="--c:var(--am)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><path d="M20 24 c5 -10 10 10 15 0 c5 -10 10 10 15 0" stroke="#b8433c" stroke-width="2" fill="none"/><rect x="60" y="14" width="12" height="18" fill="#b8433c"/><path d="M66 10 v6 M62 14 h8" stroke="#1c1c1c" stroke-width="2"/><rect x="82" y="12" width="16" height="20" fill="none" stroke="#2563a8" stroke-width="2"/><path d="M86 16 h3 M91 20 h3 M88 24 h4" stroke="#2563a8" stroke-width="2"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">11</span><span class="lab">AMERICAS &middot; TRADE</span><span class="outlet">NYT</span></div>
+    <h3>Canada&ndash;China trade pact</h3><p>Carney and Xi announce an accord slashing tariffs between the two countries.</p></div></div>
+  <div class="card" style="--c:var(--as)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><path d="M18 32 V14 h10 v6 h10 v-6 h10 v18 z" fill="#7050a0"/><rect x="24" y="24" width="6" height="8" fill="#e9e2cf"/><circle cx="68" cy="20" r="7" fill="none" stroke="#1c1c1c" stroke-width="2"/><path d="M73 26 l9 8" stroke="#1c1c1c" stroke-width="2"/><path d="M94 12 c5 5 5 10 0 15" stroke="var(--alarm)" stroke-width="2" fill="none"/><path d="M100 10 c7 7 7 16 0 22" stroke="var(--alarm)" stroke-width="2" fill="none"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">12</span><span class="lab">ASIA &middot; LABOUR</span><span class="outlet">REUTERS</span></div>
     <h3>Bangladesh wage crackdown</h3><p>Police fire tear gas and stun grenades at garment workers; factories shut.</p></div></div>
-  <div class="card" style="--c:var(--ru)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M22 20 h34 l10 4 -10 4 h-34 z" fill="#777"/><path d="M36 14 l6 8 6 -8 z" fill="#777"/><path d="M78 30 c6 -10 16 -10 24 -14" stroke="#b8433c" stroke-width="3" fill="none"/><path d="M98 12 l6 4 -8 2 z" fill="#b8433c"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">12</span><span class="lab">RUSSIA &middot; AIR CRASH</span></div>
+  <div class="card" style="--c:var(--ru)"><div class="art"><svg viewBox="0 0 120 40"><rect width="120" height="40" fill="#e9e2cf"/><path d="M20 20 h32 l10 4 -10 4 h-32 z" fill="#777"/><path d="M34 12 l6 8 6 -8 z" fill="#777"/><path d="M26 28 v-6" stroke="#e9e2cf" stroke-width="2"/><path d="M76 32 c6 -12 16 -12 24 -16 M96 12 l7 4 -9 3 z" stroke="var(--alarm)" stroke-width="2" fill="none"/><path d="M84 30 l4 6 M92 28 l5 7" stroke="#1c1c1c" stroke-width="2"/></svg></div>
+    <div class="body"><div class="top"><span class="disc">13</span><span class="lab">RUSSIA &middot; AIR CRASH</span><span class="outlet">AFP</span></div>
     <h3>An-12 crashes in Siberia</h3><p>Military transport goes down near Kemerovo; all 19 aboard killed (Defense Ministry).</p></div></div>
-  <div class="card" style="--c:var(--af)"><div class="art"><svg viewBox="0 0 120 38"><rect width="120" height="38" fill="#e9e2cf"/><path d="M40 10 v18 M26 14 h28" stroke="#3a8a4d" stroke-width="4"/><path d="M24 26 a8 6 0 0 0 16 0 z" fill="#1a1a1a"/><rect x="70" y="20" width="28" height="10" fill="#1a1a1a"/><rect x="82" y="10" width="4" height="10" fill="#3a8a4d"/></svg></div>
-    <div class="body"><div class="top"><span class="disc">13</span><span class="lab">AFRICA &middot; JUSTICE</span></div>
-    <h3>Mondlane goes on trial</h3><p>Mozambique's opposition leader faces court over deadly 2024 post-election protests.</p></div></div>
 </div>
 
 <!-- BOTTOM BAND -->
 <div class="bottom">
   <div class="map">
     <div class="panel-title"><span>WHERE IT HAPPENED</span><span style="font-weight:400;letter-spacing:.05em;color:#6b6b64">1&ndash;13</span></div>
-    <svg viewBox="0 0 380 210" preserveAspectRatio="none">
-      <rect width="380" height="210" fill="#d3e2ea"/>
-      <!-- crude continents, pale tan -->
-      <path d="M40 30 L95 25 L110 55 L88 78 L96 95 L72 118 L52 92 L60 60 Z" fill="#e0d3b4"/> <!-- N America -->
-      <path d="M96 120 L120 118 L132 150 L112 190 L98 158 Z" fill="#e0d3b4"/> <!-- S America -->
-      <path d="M168 78 L200 70 L206 92 L186 100 L176 128 L198 148 L184 172 L164 140 L170 108 L160 90 Z" fill="#e0d3b4"/> <!-- Africa -->
-      <path d="M176 44 L208 38 L216 52 L192 60 Z" fill="#e0d3b4"/> <!-- Europe -->
-      <path d="M212 34 L320 28 L342 62 L312 84 L322 104 L292 112 L268 88 L236 78 L214 58 Z" fill="#e0d3b4"/> <!-- Asia -->
-      <path d="M298 140 L330 134 L340 156 L312 164 Z" fill="#e0d3b4"/> <!-- Australia -->
-      <!-- pins -->
-      <g font-family="Helvetica,Arial,sans-serif" font-size="8" font-weight="bold" text-anchor="middle">
-        <g><circle cx="196" cy="52" r="7" fill="#2563a8"/><text x="196" y="54.5" fill="#fff">1</text></g>
-        <g><circle cx="226" cy="82" r="7" fill="#d97b29"/><text x="226" y="84.5" fill="#fff">2</text></g>
-        <g><circle cx="304" cy="96" r="7" fill="#7050a0"/><text x="304" y="98.5" fill="#fff">3</text></g>
-        <g><circle cx="190" cy="118" r="7" fill="#3a8a4d"/><text x="190" y="120.5" fill="#fff">4</text></g>
-        <g><circle cx="222" cy="64" r="7" fill="#2f8f8a"/><text x="222" y="66.5" fill="#fff">5</text></g>
-        <g><circle cx="76" cy="62" r="7" fill="#b8433c"/><text x="76" y="64.5" fill="#fff">6</text></g>
-        <g><circle cx="90" cy="76" r="7" fill="#444"/><text x="90" y="78.5" fill="#fff">7</text></g>
-        <g><circle cx="218" cy="88" r="7" fill="#d97b29"/><text x="218" y="90.5" fill="#fff">8</text></g>
-        <g><circle cx="272" cy="60" r="7" fill="#7050a0"/><text x="272" y="62.5" fill="#fff">9</text></g>
-        <g><circle cx="192" cy="62" r="7" fill="#2563a8"/><text x="192" y="64.5" fill="#fff">10</text></g>
-        <g><circle cx="258" cy="98" r="7" fill="#7050a0"/><text x="258" y="100.5" fill="#fff">11</text></g>
-        <g><circle cx="282" cy="42" r="7" fill="#777"/><text x="282" y="44.5" fill="#fff">12</text></g>
-        <g><circle cx="204" cy="146" r="7" fill="#3a8a4d"/><text x="204" y="148.5" fill="#fff">13</text></g>
+    <svg viewBox="0 0 420 232" preserveAspectRatio="none">
+      <rect width="420" height="232" fill="#d3e2ea"/>
+      <!-- graticule -->
+      <g stroke="#b9cdd8" stroke-width="0.6">
+        <path d="M44 0 V232 M88 0 V232 M132 0 V232 M176 0 V232 M220 0 V232 M264 0 V232 M308 0 V232 M352 0 V232 M396 0 V232"/>
+        <path d="M0 30 H420 M0 60 H420 M0 90 H420 M0 120 H420 M0 150 H420 M0 180 H420 M0 210 H420"/>
+      </g>
+      <!-- coastlines (coarse but identifiable) -->
+      <g fill="#e6dcc3" stroke="#8b8467" stroke-width="0.7" stroke-linejoin="round"><path d="M140,219L140,220L137,220L135,220L133,220L133,219L135,219L138,220L139,219L139,219L140,219ZM157,217L159,217L159,218L159,219L158,220L156,220L154,220L151,220L148,220L147,220L150,219L151,219L151,218L152,218L152,217L153,217L156,216L157,217ZM130,207L130,209L128,209L127,209L126,209L126,209L125,209L123,209L123,209L124,208L126,208L126,207L126,206L127,205L128,205L129,205L129,206L130,207ZM142,199L140,199L139,199L138,199L138,200L137,200L138,201L137,202L136,202L135,202L134,203L134,203L134,204L134,205L135,205L136,205L137,206L138,207L138,209L139,210L139,211L138,212L138,212L136,212L135,213L133,213L132,214L130,214L129,214L128,215L126,215L124,215L122,215L120,215L122,216L123,216L124,216L123,217L121,217L119,217L119,218L120,218L122,219L125,220L127,220L128,220L130,221L133,221L136,221L138,222L140,222L142,223L142,223L143,223L145,222L147,222L150,222L152,221L155,221L158,221L160,222L161,221L162,221L165,221L168,221L170,220L172,220L175,220L177,220L176,219L175,218L173,218L171,218L168,218L168,217L170,216L172,216L174,216L175,215L176,215L178,215L179,214L182,214L184,214L185,214L187,214L188,213L190,213L191,212L192,212L191,211L192,210L193,210L194,210L196,209L197,209L197,208L198,208L199,208L200,208L201,208L202,207L203,208L205,208L206,208L208,208L209,208L210,208L211,208L212,208L214,207L215,207L216,207L217,207L218,207L219,206L220,206L221,206L222,207L223,207L224,207L224,207L226,206L227,206L229,206L230,206L231,206L232,206L234,206L235,206L236,207L238,207L239,207L240,207L242,207L243,207L244,206L245,206L246,206L247,206L248,205L249,205L250,204L251,204L252,205L253,205L254,206L255,206L256,206L258,205L259,204L260,204L261,204L262,204L263,203L264,203L265,203L266,203L267,202L268,202L269,202L270,201L271,201L273,201L274,201L275,201L276,201L277,201L278,202L279,203L280,203L281,203L282,204L283,204L284,203L285,203L286,203L287,203L288,203L289,204L290,204L291,205L291,206L290,206L289,207L291,207L290,208L289,209L290,209L292,209L293,209L294,208L295,208L295,207L296,206L298,206L299,206L301,206L301,205L302,204L303,204L304,203L305,203L307,203L308,203L309,203L310,202L311,203L312,202L313,201L314,202L315,203L316,203L317,202L318,203L319,203L321,203L322,203L323,203L324,203L325,202L326,203L327,202L328,202L329,201L330,201L332,201L332,201L334,202L335,202L336,202L337,202L339,202L340,202L340,201L342,201L343,201L343,201L345,202L346,202L347,202L348,203L350,203L351,203L352,202L353,202L354,202L355,202L356,202L357,202L358,202L359,202L360,202L361,202L363,202L364,202L365,202L366,201L367,201L368,200L368,201L369,202L370,202L372,202L373,202L374,202L376,202L377,202L378,202L380,202L381,203L381,204L382,204L384,204L385,204L387,205L388,205L389,205L390,204L391,205L392,205L393,205L394,206L396,206L396,206L398,207L398,207L400,207L401,207L402,207L404,207L405,207L406,207L408,208L409,208L410,208L409,209L408,210L408,211L406,211L405,212L404,212L403,212L402,213L402,213L401,214L401,215L401,216L402,217L404,217L405,218L403,218L401,218L399,218L398,219L397,220L396,220L398,221L399,221L400,222L401,222L403,223L404,223L407,223L408,224L411,224L412,225L415,224L418,225L420,225L420,232L0,232L0,225L1,224L3,225L4,225L7,225L8,224L12,224L13,224L15,225L18,225L21,226L26,226L29,226L34,226L37,226L40,226L43,226L39,225L35,225L34,224L31,224L31,223L32,222L30,221L29,221L27,221L30,221L33,220L34,221L36,220L38,220L39,220L37,219L36,218L33,218L31,218L29,218L28,217L27,217L26,217L25,215L27,216L29,216L31,215L32,216L33,216L35,215L36,215L38,215L40,215L39,214L41,213L42,213L43,213L45,213L46,213L48,213L50,212L51,212L52,212L54,212L56,212L57,212L59,212L60,212L62,212L64,212L65,212L67,212L69,212L70,212L72,212L73,211L74,212L76,211L77,211L78,211L79,212L80,212L82,212L83,213L85,213L86,213L88,213L89,213L91,213L93,213L93,213L92,212L92,212L90,212L90,211L89,210L90,210L91,210L93,210L94,210L96,210L98,211L99,211L101,210L102,210L103,211L105,211L106,210L107,210L108,210L110,210L111,211L112,211L114,211L115,211L116,211L117,211L119,211L120,211L121,211L123,211L124,211L125,211L126,210L128,210L130,210L131,210L131,209L132,208L131,207L130,206L130,205L131,205L131,204L131,203L132,202L132,202L133,201L134,201L135,201L135,200L136,199L138,199L138,199L139,199L140,198L141,198L142,198L143,198L143,198L142,199ZM131,185L132,186L134,187L134,187L132,187L132,187L130,188L129,188L128,187L127,187L126,186L125,186L123,184L124,184L125,185L127,186L128,185L128,184L129,184L130,184L131,185ZM380,169L381,169L382,169L383,170L383,172L381,172L380,172L380,171L380,170L379,169L380,169ZM412,169L413,169L413,170L413,170L412,171L411,172L412,173L410,173L410,174L409,175L408,176L406,176L406,176L404,176L405,174L406,173L408,172L409,171L410,171L410,170L411,169L412,168ZM414,163L415,164L415,163L415,164L416,165L418,164L418,166L418,166L416,167L416,168L415,169L414,170L414,169L414,168L414,167L413,167L414,166L414,165L413,163L413,163L412,161L411,161L412,161L413,161L414,163ZM268,133L269,135L269,136L268,137L268,138L268,139L267,141L267,142L266,145L265,147L265,148L264,148L263,149L262,149L261,148L261,148L261,146L261,145L260,144L261,144L261,143L262,142L262,140L261,140L261,138L262,138L262,137L264,136L265,136L266,135L266,134L267,133L267,132L268,133L268,133ZM377,134L378,135L379,134L380,135L380,137L380,138L381,139L381,140L382,141L383,142L384,142L384,143L385,145L386,145L386,146L387,147L387,148L388,149L389,150L389,151L389,152L389,153L389,155L388,157L388,158L387,159L387,160L386,160L386,161L385,162L385,163L385,164L384,165L383,165L382,165L381,166L381,166L380,166L379,165L378,166L377,166L375,165L374,165L373,164L373,163L372,162L371,162L372,161L371,160L371,161L370,161L370,161L371,159L371,158L370,160L369,160L369,161L368,160L367,159L366,158L365,157L363,157L361,157L360,157L358,158L357,158L356,158L355,158L354,160L353,160L352,160L350,160L349,160L348,161L347,161L345,160L344,159L345,159L345,158L344,155L344,154L344,153L343,152L343,151L342,150L342,149L343,150L343,148L342,147L343,146L343,145L343,144L343,145L344,144L345,144L345,143L346,143L348,142L349,142L350,142L351,141L352,141L353,139L353,138L354,137L354,138L354,137L355,136L356,135L357,135L357,134L358,134L359,134L360,135L361,135L362,134L362,133L362,132L363,132L365,132L364,131L365,131L366,131L367,132L368,132L369,131L370,132L369,133L369,133L368,134L368,135L369,136L370,136L371,137L371,138L372,138L374,139L374,138L375,137L375,135L375,134L375,133L376,131L376,130L377,131L377,132L377,133L377,134ZM337,125L339,125L341,125L342,126L344,126L345,127L344,127L342,127L341,127L340,127L339,126L338,126L336,126L334,125L333,125L334,124L335,124L336,124L337,125ZM367,117L367,120L368,120L369,119L370,118L371,118L372,119L373,119L375,119L377,120L379,121L379,122L380,122L382,124L381,125L382,126L383,126L384,128L384,128L385,128L386,129L385,130L384,129L383,129L382,128L381,128L380,126L379,126L378,126L377,127L377,128L376,128L375,128L374,127L372,126L371,127L371,126L372,125L371,124L371,123L369,122L368,122L366,121L365,121L365,120L364,120L365,119L366,119L364,119L364,118L363,118L362,117L364,117L364,116L366,117ZM356,114L355,115L354,116L353,115L351,116L350,116L350,117L351,118L352,117L354,117L353,117L353,118L352,118L353,120L354,122L353,123L353,122L352,122L351,121L351,119L350,120L350,121L351,123L349,123L350,122L349,121L349,120L349,119L349,118L350,116L351,114L352,115L353,115L355,115L356,114ZM333,124L332,124L331,122L330,121L329,121L328,120L328,119L327,117L326,116L325,115L325,114L324,113L323,112L322,111L321,110L322,109L324,109L325,110L326,111L326,112L327,113L329,113L330,114L330,115L331,116L331,117L331,117L332,118L332,119L334,120L334,122L333,124ZM348,114L349,115L347,115L347,116L347,117L346,118L346,119L346,121L344,121L344,121L342,120L341,120L340,120L339,120L338,118L337,117L337,115L337,114L338,113L339,114L340,114L340,113L342,112L343,111L343,110L345,109L346,108L346,107L347,108L348,109L349,109L348,110L348,111L347,112L348,113ZM357,105L358,107L357,108L357,107L356,107L357,108L355,108L355,107L354,106L353,106L352,107L353,106L353,105L354,105L355,105L356,104L356,103L357,104L357,105ZM305,108L304,108L303,107L303,105L304,103L304,104L305,105L305,106L305,108ZM352,92L352,93L353,94L353,95L352,95L352,97L352,98L353,98L355,98L355,99L354,99L353,99L352,98L351,98L351,98L350,97L350,95L350,93L351,92ZM125,90L126,91L127,90L128,91L129,91L130,92L129,92L128,92L127,92L127,93L126,93L124,93L123,92L124,92L126,92L125,91L124,91L125,90ZM117,87L119,87L120,88L121,89L122,89L123,89L123,90L123,90L121,90L119,90L120,90L119,89L118,88L116,88L115,87L113,87L113,87L111,88L112,87L113,86L114,86L115,86L117,87ZM374,68L374,69L374,71L372,71L370,71L368,73L368,72L368,71L366,72L364,72L363,72L364,73L363,75L362,76L362,76L362,74L361,74L361,73L362,73L363,72L364,71L365,70L367,70L368,70L370,68L370,69L372,67L373,67L373,65L373,64L374,63L375,63L376,64L376,66L374,67L374,68ZM378,59L379,59L380,59L380,60L378,61L377,62L375,61L375,62L373,62L373,61L374,60L375,60L375,58L376,57L377,59L378,59ZM66,53L63,53L62,52L61,52L60,51L61,51L63,51L64,52L65,53L66,53ZM145,51L144,52L144,51L145,52L146,52L148,53L147,53L148,53L149,55L148,56L147,56L147,55L145,56L144,55L143,55L141,55L141,54L142,53L143,51L144,50L145,49L145,51ZM378,51L379,53L377,52L376,54L377,56L377,56L376,57L376,56L376,54L376,53L376,52L376,50L375,49L375,47L376,47L376,46L377,47L377,48L377,49L378,51ZM202,49L200,49L198,49L199,48L199,47L200,46L201,45L202,45L203,46L203,47L203,47L202,49ZM206,40L205,42L206,42L208,42L207,43L206,44L208,44L209,46L209,46L210,47L212,48L211,49L212,50L211,51L209,51L207,51L206,51L205,51L204,52L205,50L206,50L204,50L205,49L204,48L205,47L206,47L206,46L204,45L204,44L203,45L203,43L203,43L203,41L204,40L205,41L206,40ZM111,31L111,32L112,32L113,33L115,33L116,33L117,34L116,34L114,34L113,33L112,34L110,35L110,34L108,34L109,33L109,32L110,31ZM193,30L193,31L194,32L193,33L189,34L188,34L187,34L183,34L185,33L182,32L184,32L182,31L182,31L184,30L186,31L188,31L189,31L191,30L193,30ZM6,30L7,31L6,30L9,30L12,31L11,32L9,32L9,33L7,33L6,33L5,32L3,32L2,32L1,31L0,31L1,32L0,32L0,27L3,28L6,29ZM104,26L104,28L106,27L107,28L107,29L108,29L109,28L110,27L110,26L112,26L114,26L115,27L114,28L115,29L113,30L111,31L110,30L108,32L107,33L105,33L104,34L103,35L101,36L100,38L100,39L100,40L101,40L102,41L102,42L104,42L106,43L107,43L108,44L110,44L111,45L113,45L114,45L114,46L114,47L115,49L117,50L118,50L118,48L118,46L117,46L119,45L120,44L121,43L120,41L118,40L120,39L119,38L119,36L120,35L122,36L123,36L124,36L125,36L126,37L129,37L129,38L129,40L130,40L131,41L133,40L134,39L135,38L136,39L137,41L138,43L138,43L139,44L141,45L142,45L143,46L144,47L144,47L145,49L144,49L143,50L141,50L140,51L138,51L135,51L134,51L133,51L132,52L130,53L128,54L127,56L128,55L130,54L132,53L134,53L135,53L134,54L134,55L135,56L136,57L138,57L139,55L139,56L140,57L139,58L136,58L135,59L134,60L133,59L135,58L133,58L132,58L131,59L129,59L128,60L128,61L127,61L128,62L127,63L126,63L125,63L124,63L126,63L124,64L123,64L123,65L123,66L122,65L122,66L122,67L121,68L122,67L121,67L121,66L121,67L121,68L122,70L121,71L120,72L119,72L118,73L116,74L116,75L115,75L115,76L115,77L116,78L116,79L117,81L117,83L116,84L115,83L114,82L114,81L114,79L113,78L112,77L111,78L110,77L109,77L108,77L107,77L105,77L106,78L105,78L103,78L102,78L101,78L100,78L98,79L97,80L97,80L96,82L97,83L96,84L96,85L96,86L96,88L97,89L97,90L98,91L98,92L99,92L100,93L101,92L102,92L103,92L104,91L104,90L104,89L105,89L107,88L108,88L109,89L108,90L108,91L108,92L107,93L107,95L106,96L107,96L108,96L109,96L110,95L111,96L112,96L113,97L113,98L113,99L113,100L112,101L113,103L114,104L114,104L115,105L116,104L117,104L118,104L119,104L120,105L121,104L122,103L122,102L123,102L123,101L124,102L125,101L126,100L127,100L126,101L126,103L126,103L126,104L127,103L127,102L128,101L128,100L129,101L130,102L131,102L133,102L133,103L134,103L135,103L136,102L138,102L137,103L137,103L138,103L139,104L139,105L140,105L141,106L142,107L142,107L143,108L145,109L146,108L147,109L148,109L150,110L150,111L150,111L151,114L152,115L151,116L153,116L153,118L154,117L156,117L158,118L158,119L159,119L162,120L163,120L165,121L167,122L167,123L168,123L169,125L169,128L168,128L167,130L166,132L165,133L165,134L165,136L164,138L164,140L164,141L162,143L162,144L161,145L161,146L160,146L158,146L157,147L156,147L154,148L153,149L153,150L153,152L152,154L151,156L150,157L149,158L149,159L148,160L147,160L146,161L145,161L143,160L142,160L143,161L143,162L144,163L143,165L141,166L139,166L137,166L138,167L137,168L137,169L136,169L134,169L134,170L135,171L136,170L136,171L135,171L134,172L134,173L132,174L131,175L131,176L132,177L133,177L133,178L132,179L131,180L130,181L129,181L130,183L130,183L129,183L127,184L127,185L125,185L124,184L123,183L122,183L123,182L122,181L122,179L122,177L124,176L122,176L123,175L123,173L125,173L125,171L124,170L124,172L124,170L124,167L125,167L124,165L124,164L125,162L126,160L127,158L126,156L127,155L127,153L127,152L127,149L128,146L128,144L128,141L128,140L127,139L124,137L122,136L121,135L121,134L120,132L119,129L118,127L117,126L117,125L116,124L115,124L115,122L115,121L116,120L117,119L116,119L116,117L116,116L117,116L117,115L118,114L118,113L119,113L120,112L120,111L120,110L120,109L120,107L119,107L118,106L118,105L117,104L116,105L117,106L116,107L115,106L114,105L113,105L112,105L112,104L111,104L110,103L110,103L110,101L109,101L108,100L108,99L107,99L106,99L105,98L104,98L102,97L101,96L100,95L100,95L98,96L97,95L96,95L95,95L94,94L92,94L91,93L90,93L89,92L89,92L88,91L87,90L87,89L87,88L87,87L86,87L85,85L84,84L84,84L83,83L82,82L81,81L81,80L80,79L79,79L78,77L78,76L77,75L76,75L76,76L76,77L77,79L78,79L78,80L79,81L80,82L80,83L81,84L81,85L82,85L82,86L82,87L81,86L81,85L80,84L79,83L78,82L78,81L76,81L76,80L77,80L76,78L75,78L75,77L74,76L74,75L73,74L72,73L72,72L71,72L70,72L69,71L68,69L67,68L67,67L66,66L65,65L65,64L65,63L65,62L65,61L65,60L65,57L65,56L65,54L65,54L66,54L67,55L67,54L67,53L64,52L63,51L61,50L61,49L59,48L59,47L58,46L57,45L56,44L56,43L54,42L54,41L52,41L51,41L49,41L47,39L46,39L44,39L42,39L40,38L38,38L37,38L37,39L35,39L34,39L33,40L33,38L35,37L33,38L32,39L30,40L31,40L30,41L29,42L28,42L26,43L24,44L22,45L21,45L20,46L18,46L19,45L20,45L21,44L23,44L23,43L25,43L26,42L26,41L27,40L25,40L24,41L24,40L22,40L21,40L20,39L19,39L18,38L17,38L16,37L17,36L18,35L18,35L19,35L20,35L21,34L22,34L22,33L22,32L20,33L19,33L18,33L16,33L15,32L14,31L16,31L18,30L19,31L21,31L20,30L19,29L18,29L17,28L15,28L16,27L18,27L20,27L21,25L22,25L24,25L26,25L27,24L29,24L30,25L32,25L34,25L35,25L38,26L40,26L41,26L42,26L44,26L46,26L48,26L50,27L51,27L52,27L53,26L55,26L57,26L59,26L59,26L60,26L61,25L63,26L65,26L65,27L66,26L68,26L70,27L73,27L74,27L76,27L77,28L75,28L78,29L81,29L82,28L83,29L84,29L83,28L84,28L85,27L86,27L87,28L88,28L90,28L92,29L93,29L95,29L96,28L98,28L98,29L99,28L100,27L99,26L97,26L98,24L99,23L100,24L102,24L103,26L102,26L104,26ZM77,22L76,22L79,22L80,23L82,22L83,22L84,24L84,23L84,22L85,22L86,22L87,22L88,24L88,24L90,25L92,26L90,26L91,27L88,27L86,27L85,27L83,27L79,28L78,28L77,27L76,27L75,27L73,26L76,25L77,26L79,25L77,25L74,25L72,25L72,25L75,24L73,24L71,24L72,23L72,22L76,22L77,22ZM109,22L110,23L111,21L114,21L116,22L116,23L118,23L119,22L122,23L123,24L126,24L127,25L130,25L131,26L132,27L130,27L132,28L134,29L136,30L138,30L137,31L135,32L134,32L132,30L131,31L132,32L133,33L135,34L134,35L133,35L130,34L131,35L133,36L130,36L127,35L126,34L124,33L123,33L119,33L118,33L119,32L121,32L124,32L124,31L125,29L124,28L123,28L120,27L121,27L120,26L119,26L118,26L117,26L115,26L111,26L108,25L107,25L106,25L107,24L105,24L105,23L106,22L107,21L110,21L109,22ZM93,21L94,21L96,21L96,22L97,22L97,24L95,24L94,24L93,24L90,23L93,22L92,21L93,21ZM101,22L100,23L99,23L98,22L99,21L100,20L102,20L104,21L103,22L101,22ZM69,24L66,25L66,24L63,23L64,22L65,21L64,20L68,20L70,20L73,20L74,21L75,21L74,22L71,23L69,23ZM379,19L378,20L374,20L372,20L370,19L370,18L372,18L375,18L379,19ZM95,17L96,18L95,19L94,19L92,19L90,19L90,18L92,18L93,17L95,17ZM84,18L85,18L86,18L86,19L82,20L79,20L77,20L80,19L74,19L73,19L74,18L75,17L79,18L81,19L83,19L81,17L82,17L83,17L84,18ZM277,25L273,25L270,24L271,23L273,21L272,21L275,20L278,19L281,18L285,17L287,17L290,17L290,17L290,18L285,18L282,19L278,20L276,21L275,23L275,24L277,25ZM100,17L101,17L103,17L104,17L105,18L106,19L108,19L109,19L111,18L113,18L115,18L117,19L116,20L114,20L113,20L110,20L107,20L105,20L102,20L102,19L100,18L98,17L97,17L100,17ZM74,16L74,17L73,17L72,17L70,18L68,18L67,18L69,17L71,16L73,16L74,16ZM335,17L336,17L340,17L342,18L343,18L342,19L339,20L338,20L339,21L341,21L342,21L342,21L345,21L349,21L354,22L354,21L356,21L358,21L360,22L361,23L360,23L361,24L363,25L364,23L366,24L368,24L370,24L371,24L373,24L372,23L374,22L384,23L385,24L388,25L393,24L395,25L396,25L396,26L398,27L399,26L401,26L404,26L406,26L408,27L409,27L408,26L409,26L413,26L415,26L418,27L420,27L420,32L418,33L417,33L418,33L419,34L419,35L417,35L414,36L413,37L411,37L409,38L409,39L407,38L404,39L403,38L402,39L401,39L400,40L399,41L400,42L400,44L399,44L399,45L399,45L397,46L397,47L395,48L395,49L393,50L392,49L392,47L391,45L392,43L393,42L395,41L397,40L399,38L401,37L402,35L400,35L400,37L397,38L396,36L393,37L390,39L391,40L388,40L386,40L387,39L385,39L383,40L380,40L376,40L372,42L368,45L369,46L370,46L371,47L372,46L373,46L375,48L375,49L374,50L374,51L373,54L372,55L371,56L370,58L368,59L367,60L366,61L364,60L363,61L362,62L361,63L361,64L359,64L359,65L360,66L361,68L361,69L361,70L361,71L360,71L359,72L358,72L358,70L357,69L358,68L357,67L356,67L355,67L356,66L356,65L356,65L353,65L352,66L351,66L352,65L353,64L352,63L351,64L350,65L349,65L348,65L347,66L348,67L349,67L350,68L351,67L352,68L353,68L351,69L351,69L350,70L349,71L350,72L351,73L351,74L352,75L351,76L352,78L352,79L352,80L350,81L350,83L348,84L347,86L345,87L344,87L343,87L342,88L340,88L339,88L339,90L338,89L337,88L335,89L334,91L333,91L334,93L335,94L336,95L337,96L338,99L337,101L336,102L335,103L334,104L333,105L332,104L333,103L332,102L331,102L330,102L330,100L329,100L328,100L328,99L327,99L327,100L326,102L326,103L326,104L327,105L327,106L328,107L329,108L330,109L331,110L331,111L331,112L332,114L331,114L330,113L328,112L327,111L327,110L327,109L327,108L326,107L325,106L325,105L325,104L325,103L325,102L325,101L325,100L325,99L324,98L324,97L324,95L323,94L323,95L321,96L320,95L320,94L320,93L319,91L319,90L318,89L317,89L317,87L317,87L316,87L315,88L314,88L313,88L311,88L312,89L311,90L309,91L308,92L307,93L306,94L305,95L304,95L303,96L304,98L304,99L303,100L303,103L302,104L301,104L301,105L299,105L299,103L298,101L298,101L297,100L297,98L297,97L296,95L295,93L295,91L295,90L295,88L293,89L291,88L291,87L290,85L289,85L288,84L287,83L285,83L283,83L282,84L280,83L278,83L277,83L276,81L275,81L274,82L272,81L271,80L270,80L269,79L268,77L267,77L266,77L266,78L266,79L267,80L268,81L269,82L268,83L269,83L269,84L269,83L270,82L270,83L270,84L270,85L271,85L273,85L274,84L275,83L275,82L276,84L276,85L277,85L278,85L279,86L280,87L279,88L279,89L278,90L277,90L277,91L276,92L276,93L274,93L274,94L272,94L271,95L271,96L270,96L268,97L267,98L265,98L264,99L263,99L262,100L261,100L260,99L260,98L260,97L260,96L260,94L259,93L259,93L258,92L258,91L257,90L256,89L256,88L255,85L254,85L253,84L253,83L252,82L252,81L251,80L251,79L251,78L250,79L250,80L249,79L248,78L248,79L249,80L250,82L250,83L251,84L252,85L251,86L253,87L253,89L253,90L254,92L255,93L255,94L256,95L256,96L258,97L259,98L259,99L260,100L261,101L261,101L261,103L263,102L264,102L265,102L266,101L267,101L269,101L270,101L270,102L269,103L269,104L268,106L268,107L267,109L266,111L264,112L263,113L261,115L260,116L259,117L259,118L258,119L257,119L257,120L256,122L255,124L256,125L256,126L256,127L256,128L257,129L257,130L257,131L257,132L257,134L257,136L257,137L256,138L255,138L254,139L252,140L251,141L250,142L251,143L251,145L251,146L251,147L250,148L249,149L248,150L248,151L248,152L247,154L246,155L245,156L244,157L243,158L242,159L241,159L240,160L239,160L238,160L236,160L235,160L234,160L233,161L232,160L231,160L231,159L231,158L231,157L230,156L230,155L229,153L228,152L228,151L227,150L227,149L227,147L227,145L226,144L226,143L225,141L225,141L224,139L224,138L224,136L224,135L225,133L226,132L226,131L226,129L225,129L225,128L225,127L225,126L225,125L224,124L224,122L223,121L222,120L221,119L220,117L221,117L221,116L221,115L221,113L221,112L221,111L220,110L219,110L218,111L216,110L216,109L215,108L213,108L212,108L211,108L209,109L209,110L208,110L207,110L205,109L203,110L202,110L201,110L199,110L198,109L197,108L197,107L196,107L195,106L195,105L194,104L193,103L193,102L192,102L192,101L191,101L191,100L190,99L190,97L189,97L191,96L191,95L191,93L191,91L191,90L190,89L190,88L191,87L191,85L192,85L193,84L193,82L194,82L195,80L195,80L196,80L197,79L199,77L199,76L199,75L200,73L201,73L202,72L203,71L203,70L205,70L206,70L207,71L209,70L210,70L211,69L212,69L214,69L216,68L217,68L219,68L220,68L221,68L222,69L223,68L222,69L223,70L223,71L222,72L223,72L223,73L225,74L226,74L228,74L228,76L229,76L231,76L232,77L233,76L233,75L234,74L237,74L238,75L239,75L241,75L242,76L243,76L245,76L246,75L247,76L248,76L250,76L251,75L251,74L251,72L252,71L252,70L252,69L251,69L250,69L248,69L247,69L246,69L245,69L244,69L242,69L242,67L241,67L241,66L241,65L242,64L244,64L244,63L246,63L248,62L249,62L251,62L253,63L255,63L256,63L257,63L258,62L258,61L258,61L257,60L255,59L254,58L253,58L254,57L255,56L254,56L256,55L255,55L254,55L253,56L252,56L251,56L251,57L253,57L251,58L250,59L249,58L248,58L249,57L247,56L246,56L245,57L245,58L244,58L243,60L243,60L242,61L243,62L244,63L242,63L241,64L240,63L239,63L238,64L238,64L237,64L237,64L237,65L237,65L237,66L238,67L237,67L237,68L237,69L235,69L235,67L235,67L234,66L234,65L233,65L233,64L233,63L232,62L230,61L230,60L229,60L228,59L227,58L226,58L226,57L224,58L224,59L225,59L226,60L226,61L228,62L229,62L230,63L230,63L231,64L230,64L229,65L230,65L229,66L229,67L229,66L228,65L228,64L227,64L226,63L224,62L223,61L222,61L222,59L220,59L219,60L218,60L215,60L214,60L214,62L212,63L211,63L210,64L210,65L210,66L209,67L209,67L208,68L207,69L206,69L205,69L204,69L203,70L202,68L201,68L200,68L200,67L199,67L199,65L200,64L200,63L200,62L200,61L199,61L201,60L202,60L204,60L205,60L206,60L208,60L208,59L209,57L207,55L207,55L205,54L205,53L206,53L208,53L208,52L209,52L212,51L212,50L213,50L214,50L215,48L217,47L218,47L219,47L220,46L220,45L219,44L219,43L220,42L221,42L222,42L222,43L223,43L221,45L222,46L223,46L224,46L225,46L226,46L227,46L229,46L231,45L232,46L233,46L235,45L235,44L235,43L235,42L236,42L237,43L238,42L237,40L239,39L240,39L241,39L243,39L244,39L243,38L241,38L239,39L237,39L236,38L235,38L235,36L235,35L235,35L236,34L239,32L240,32L238,31L236,31L235,32L233,34L231,35L230,37L231,38L232,39L231,40L230,40L229,42L229,44L227,44L226,45L225,45L225,43L224,42L223,40L222,39L220,41L218,41L217,40L216,39L216,36L217,35L220,34L222,33L224,31L227,29L229,28L232,26L235,25L237,26L239,24L241,25L243,24L247,25L245,26L246,26L247,26L249,27L253,27L257,28L258,29L257,31L255,31L250,30L249,30L251,31L251,33L252,33L253,34L253,33L253,32L256,33L257,33L256,32L259,30L260,30L261,31L262,30L261,29L262,28L261,28L264,28L265,29L263,29L264,30L266,30L266,29L269,28L273,27L272,28L274,28L275,28L277,28L279,27L280,28L281,27L280,26L281,26L284,26L286,27L290,28L291,28L290,27L288,26L288,25L290,23L291,22L292,22L295,22L294,24L295,24L295,25L295,27L296,28L295,29L293,31L294,31L296,30L298,29L297,28L297,27L296,27L297,25L295,24L297,23L297,22L298,23L298,24L299,24L299,23L301,23L303,23L305,24L304,22L304,21L306,21L309,21L311,21L310,20L312,19L313,19L315,19L318,18L322,18L323,18L325,17L328,17L329,16L332,16L334,16L332,17L335,17ZM333,15L326,16L328,14L329,14L333,15ZM231,13L235,14L232,15L232,16L231,16L230,17L229,17L226,16L227,16L225,15L223,14L222,13L225,13L226,13L228,13L230,13L231,13ZM240,12L242,13L240,14L237,14L233,13L232,13L230,12L234,12L236,12L237,12L240,12ZM327,14L324,14L321,14L319,14L318,13L316,12L319,12L322,11L324,12L327,13L327,14ZM108,13L110,14L108,14L106,15L104,15L102,15L100,14L101,14L99,14L98,13L97,13L98,12L99,12L100,12L102,11L104,12L106,12L108,12L108,13ZM130,9L133,9L136,9L138,10L135,10L132,11L131,11L134,11L131,12L129,12L127,13L125,13L124,14L120,14L122,14L121,14L122,15L121,15L119,16L119,16L117,16L119,17L116,18L113,17L110,18L108,18L106,17L108,17L107,16L111,16L109,15L107,15L108,14L110,14L109,13L109,13L112,13L113,13L115,12L112,12L108,12L106,12L105,11L103,11L105,10L106,10L109,10L110,9L112,10L113,10L114,9L115,9L117,9L121,9L125,9L128,9L130,9ZM178,8L186,9L184,10L179,10L173,10L178,10L181,11L183,10L184,11L183,11L186,11L192,10L195,11L196,11L191,12L187,13L189,13L188,14L187,14L187,16L188,17L187,17L185,17L187,18L187,19L186,19L187,20L185,20L186,21L184,22L183,22L184,22L182,22L183,23L184,24L185,25L183,25L182,25L180,24L181,25L179,25L182,26L184,26L181,27L178,28L174,28L173,28L172,29L170,30L168,31L165,31L164,32L163,32L162,34L160,35L161,36L160,37L159,39L158,39L156,38L154,38L153,37L152,36L150,34L149,33L149,32L147,31L148,30L147,29L148,28L150,27L151,26L149,26L148,27L146,26L147,25L148,25L150,25L148,24L147,24L146,24L145,24L146,22L145,22L145,21L143,20L142,19L139,18L136,18L133,18L130,18L129,18L127,17L130,16L132,16L127,16L124,15L129,14L133,14L131,13L132,12L136,11L137,11L137,11L140,10L143,10L147,10L148,10L151,10L154,10L156,10L158,11L155,10L159,9L163,9L165,8L169,8L178,8Z"/></g>
+      <!-- pins 1-13, region-colored, spaced so numbers never overlap -->
+      <g font-family="Helvetica,Arial,sans-serif" font-size="8.5" font-weight="bold" text-anchor="middle">
+        <g><circle cx="238" cy="52" r="6" fill="#2563a8" stroke="#f4efe3" stroke-width="1.5"/><text x="238" y="54.8" fill="#fff">1</text></g>
+        <g><circle cx="282" cy="98" r="6" fill="#d97b29" stroke="#f4efe3" stroke-width="1.5"/><text x="282" y="100.8" fill="#fff">2</text></g>
+        <g><circle cx="340" cy="114" r="6" fill="#7050a0" stroke="#f4efe3" stroke-width="1.5"/><text x="340" y="116.8" fill="#fff">3</text></g>
+        <g><circle cx="230" cy="130" r="6" fill="#3a8a4d" stroke="#f4efe3" stroke-width="1.5"/><text x="230" y="132.8" fill="#fff">4</text></g>
+        <g><circle cx="250" cy="72" r="6" fill="#2f8f8a" stroke="#f4efe3" stroke-width="1.5"/><text x="250" y="74.8" fill="#fff">5</text></g>
+        <g><circle cx="114" cy="140" r="6" fill="#b8433c" stroke="#f4efe3" stroke-width="1.5"/><text x="114" y="142.8" fill="#fff">6</text></g>
+        <g><circle cx="110" cy="68" r="6" fill="#444444" stroke="#f4efe3" stroke-width="1.5"/><text x="110" y="70.8" fill="#fff">7</text></g>
+        <g><circle cx="268" cy="86" r="6" fill="#d97b29" stroke="#f4efe3" stroke-width="1.5"/><text x="268" y="88.8" fill="#fff">8</text></g>
+        <g><circle cx="316" cy="52" r="6" fill="#7050a0" stroke="#f4efe3" stroke-width="1.5"/><text x="316" y="54.8" fill="#fff">9</text></g>
+        <g><circle cx="214" cy="60" r="6" fill="#2563a8" stroke="#f4efe3" stroke-width="1.5"/><text x="214" y="62.8" fill="#fff">10</text></g>
+        <g><circle cx="96" cy="52" r="6" fill="#b8433c" stroke="#f4efe3" stroke-width="1.5"/><text x="96" y="54.8" fill="#fff">11</text></g>
+        <g><circle cx="304" cy="96" r="6" fill="#7050a0" stroke="#f4efe3" stroke-width="1.5"/><text x="304" y="98.8" fill="#fff">12</text></g>
+        <g><circle cx="334" cy="42" r="6" fill="#777777" stroke="#f4efe3" stroke-width="1.5"/><text x="334" y="44.8" fill="#fff">13</text></g>
       </g>
     </svg>
-    <div style="display:flex;flex-wrap:wrap;gap:3px 10px;font-size:7.5px;font-weight:700;letter-spacing:.06em;color:#5c584e;padding-top:4px">
+    <div class="legend">
       <span><i style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#2563a8"></i> EUROPE</span>
       <span><i style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#d97b29"></i> MIDDLE EAST</span>
       <span><i style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#7050a0"></i> ASIA</span>
@@ -220,37 +280,34 @@
   </div>
 
   <div>
-    <div class="panel-title"><span>ALSO ON TUESDAY 17 NOVEMBER</span><span style="font-weight:400;letter-spacing:.05em;color:#6b6b64">14&ndash;42</span></div>
+    <div class="panel-title"><span>ALSO ON TUESDAY 17 NOVEMBER</span><span style="font-weight:400;letter-spacing:.05em;color:#6b6b64">14&ndash;39</span></div>
     <ul class="alsolist">
-      <li style="--c:#777"><span class="disc">14</span>Russia: 1,441 drones downed over weekend, officials claim</li>
-      <li style="--c:#2563a8"><span class="disc">15</span>Kyiv's bridges struck in the overnight barrage</li>
-      <li style="--c:#2563a8"><span class="disc">16</span>UN: Ukraine civilian deaths this year top all of 2025</li>
-      <li style="--c:#2563a8"><span class="disc">17</span>Prague head-on train collision injures 46, incl. 15 Ukrainians</li>
-      <li style="--c:#2563a8"><span class="disc">18</span>France: public-sector marches; turnout falls (Reuters)</li>
-      <li style="--c:#2563a8"><span class="disc">19</span>Poland: Tusk government survives no-confidence vote</li>
-      <li style="--c:#777"><span class="disc">20</span>Moldova: Russian drone flies over Chi&#537;in&#259;u</li>
-      <li style="--c:#777"><span class="disc">21</span>Moldova shuts six border crossings after drone incursion</li>
-      <li style="--c:#2563a8"><span class="disc">22</span>Turkey: security raid puts opposition S&ouml;zc&uuml; TV off air</li>
-      <li style="--c:#2563a8"><span class="disc">23</span>State trustee appointed to run S&ouml;zc&uuml; media group</li>
-      <li style="--c:#2563a8"><span class="disc">24</span>Deutsche Bank leak exposes 15 million files</li>
-      <li style="--c:#d97b29"><span class="disc">25</span>Israel elects new Knesset speaker, weakening Netanyahu</li>
-      <li style="--c:#2563a8"><span class="disc">26</span>Norway beat Denmark on Haaland's last-minute penalty (NL QF)</li>
-      <li style="--c:#7050a0"><span class="disc">27</span>India beat Pakistan 2&ndash;1 to win a 10th SAFF title</li>
-      <li style="--c:#2563a8"><span class="disc">28</span>Pope Leo XIV wraps his South America tour</li>
-      <li style="--c:#7050a0"><span class="disc">29</span>Cyclone Akvan: Odisha deploys 74 rescue teams</li>
-      <li style="--c:#7050a0"><span class="disc">30</span>China&ndash;Canada: Carney and Xi slash tariffs</li>
-      <li style="--c:#2563a8"><span class="disc">31</span>Macron visits Malaysia</li>
-      <li style="--c:#7050a0"><span class="disc">32</span>Thailand pledges to scrap tariffs on US goods</li>
-      <li style="--c:#2f8f8a"><span class="disc">33</span>Australia rewrites backpacker visa rules</li>
-      <li style="--c:#7050a0"><span class="disc">34</span>M6.6 quake off Indonesia felt in Darwin; no tsunami</li>
-      <li style="--c:#444"><span class="disc">35</span>Apple Pay, iCloud, App Store outage &mdash; and it's not a hack</li>
-      <li style="--c:#3a8a4d"><span class="disc">36</span>Kenya quarantines returnees from DR Congo</li>
-      <li style="--c:#3a8a4d"><span class="disc">37</span>WFP aids those fleeing Ethiopia's clashes</li>
-      <li style="--c:#444"><span class="disc">38</span>US Senate: Schumer fights Van Hollen's primary challenge</li>
-      <li style="--c:#d97b29"><span class="disc">39</span>Gaza: winter aid deliveries held up</li>
-      <li style="--c:#444"><span class="disc">40</span>Nvidia board "does not intend to reinstate" Huang as CEO (NBC)</li>
-      <li style="--c:#d97b29"><span class="disc">41</span>Kuwait reports drone strikes</li>
-      <li style="--c:#d97b29"><span class="disc">42</span>Iran&ndash;US talks via mediators continue</li>
+      <li style="--c:#2563a8"><span class="disc">14</span><span class="txt">Kyiv's bridges struck in the overnight barrage<span class="outlet">REUTERS</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">15</span><span class="txt">UN: Ukraine civilian deaths this year top all of 2025<span class="outlet">UN OCHA</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">16</span><span class="txt">Prague head-on train collision injures 46, incl. 15 Ukrainians<span class="outlet">AP</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">17</span><span class="txt">France: unions call nationwide public-sector strike<span class="outlet">FRANCE 24</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">18</span><span class="txt">Poland: Tusk government survives no-confidence vote<span class="outlet">REUTERS</span></span></li>
+      <li style="--c:#777"><span class="disc">19</span><span class="txt">Moldova: Russian drone over Chi&#537;in&#259;u; six crossings shut<span class="outlet">AFP</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">20</span><span class="txt">Turkey: raid puts opposition S&ouml;zc&uuml; TV off air; trustee named<span class="outlet">REUTERS</span></span></li>
+      <li style="--c:#d97b29"><span class="disc">21</span><span class="txt">Israel elects new Knesset speaker, weakening Netanyahu<span class="outlet">REUTERS</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">22</span><span class="txt">Norway beat Denmark on Haaland's last-minute penalty<span class="outlet">AP</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">23</span><span class="txt">India beat Pakistan 2&ndash;1 to win a 10th SAFF title<span class="outlet">AL JAZEERA</span></span></li>
+      <li style="--c:#2563a8"><span class="disc">24</span><span class="txt">Pope Leo XIV wraps his South America tour<span class="outlet">AP</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">25</span><span class="txt">Cyclone Akvan: Odisha deploys 74 rescue teams<span class="outlet">AFP</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">26</span><span class="txt">Macron visits Malaysia<span class="outlet">AFP</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">27</span><span class="txt">Thailand pledges to scrap tariffs on US goods<span class="outlet">REUTERS</span></span></li>
+      <li style="--c:#2f8f8a"><span class="disc">28</span><span class="txt">Australia rewrites backpacker visa rules<span class="outlet">BBC</span></span></li>
+      <li style="--c:#2f8f8a"><span class="disc">29</span><span class="txt">M6.6 quake off Indonesia felt in Darwin; no tsunami<span class="outlet">AP</span></span></li>
+      <li style="--c:#444"><span class="disc">30</span><span class="txt">Apple Pay, iCloud, App Store outage &mdash; and it's not a hack<span class="outlet">AP</span></span></li>
+      <li style="--c:#3a8a4d"><span class="disc">31</span><span class="txt">Kenya quarantines returnees from DR Congo<span class="outlet">AFP</span></span></li>
+      <li style="--c:#3a8a4d"><span class="disc">32</span><span class="txt">WFP aids those fleeing Ethiopia's clashes<span class="outlet">WFP</span></span></li>
+      <li style="--c:#444"><span class="disc">33</span><span class="txt">US Senate: Schumer fights Van Hollen's primary challenge<span class="outlet">AP</span></span></li>
+      <li style="--c:#d97b29"><span class="disc">34</span><span class="txt">Kuwait reports drone strikes; Iran&ndash;US talks via mediators<span class="outlet">AL JAZEERA</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">35</span><span class="txt">Philippines: hundreds arrested in anti-Trump protests<span class="outlet">GUARDIAN</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">36</span><span class="txt">Japan's top supercomputer hit by unauthorized access<span class="outlet">JAPAN TIMES</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">37</span><span class="txt">Hyundai takes full ownership of Boston Dynamics<span class="outlet">KOREA HERALD</span></span></li>
+      <li style="--c:#d97b29"><span class="disc">38</span><span class="txt">Saudi Arabia replaces military commander after Yemen setbacks<span class="outlet">FRANCE 24</span></span></li>
+      <li style="--c:#7050a0"><span class="disc">39</span><span class="txt">Tiger Woods to return at Hero World Challenge Dec 3&ndash;6<span class="outlet">AP</span></span></li>
     </ul>
   </div>
 </div>
@@ -258,7 +315,7 @@
 <!-- FOOTER -->
 <div class="footer">
   <div class="it">Every story here happened or was first reported on Tuesday 17 November 2026.</div>
-  <div class="src">SOURCES: REUTERS, AP, AFP, BBC, AL JAZEERA, CNN, WHO, UN</div>
+  <div class="src">SOURCES: REUTERS, AP, AFP, BBC, AL JAZEERA, CNN, NYT, GUARDIAN, FRANCE 24, JAPAN TIMES, KOREA HERALD, WHO, PAHO, UN OCHA</div>
 </div>
 
 </body>
